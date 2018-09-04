@@ -1,32 +1,43 @@
-Migrations specifically change the schema i.e. what information we want it to hold
+#What is ActiveRecord
+- Check it our here [What is ActiveRecord](https://guides.rubyonrails.org/active_record_basics.html)
 
-Database versions - migrating to new versions. History of all changes in the schema
+##Main Steps
 
-DISCUSS - Inheritance
+###- Step 1 - Add the model in ruby ('model_name.rb')
+###- Step 2 - Create and run migration
+###- Step 3 - Verify schema (in console - 'Model.new')
 
-Sqlite3 automatically creates the db on migration so no need to do it this time but in rails, you’ll need to do this
+##Takeaways
 
+- ActiveRecord is Awesome!!!
 
+- ActiveRecord does a lot of the heavy lifting for you when creating your database and models and when searching your DB, so you spend more building your apps
 
-Step 1 - add the model in ruby
-Step 2 - create and run migration
-Step 3 - verify schema
+- Migrations specifically change the schema i.e. what information we want it to hold
 
+- Migrations create versioning - A history of all changes in the schema (can rollback, delete etc)
 
-Create the model
+- classes/models inherit from ActiveRecord::Base which has bundled code and methods for accessing the database.......NO MORE SQL!! Yippee!
+
+##Creating A Database
+
+### Step 1
+
+- Create the model
 
 ```ruby
-class model < ActiveRecord::Base
-    def intiliaze(name, type)
-    end
+class ModelName << ActiveRecord::Base
 end
 ```
+### Step 2 
 
-DISCUSS - No instance variables or attributes anymore. All done through schema.
+- Sqlite3 automatically creates the db when using the rake command;
 
-```shell 
-  rake db:create_migration NAME=create_model_table
+```shell
+rake db:create_migration NAME=your_table_name
 ```
+
+### Step 3
 
 ```ruby
 def change
@@ -41,41 +52,55 @@ end
 rake db:migrate
 ```
 
-Never change the schema manually.
+###Check the Schema file
+
+```ruby
+ActiveRecord::Schema.define(version: 2018_09_04_133503) do
+
+  create_table "students", force: :cascade do |t|
+    t.string "name"
+    t.string "norris_quote"
+    t.string "favorite_color"
+    t.integer "height"
+    t.integer "grade"
+  end
+
+end
+```
+
+```shell
+rake console
+pry(main)> Model.new 
+```
+
+### Add a new column
+
+```shell
+rake db:create_migration NAME=add_functions_to_model_name
+``` 
+
+```ruby
+class AddColumnsToStudents < ActiveRecord::Migration[5.2]
+  def change
+  	add_column :students, :favorite_color, :string
+  	add_column :students, :height, :integer
+  	add_column :students, :grade, :integer
+  end
+end
+```
+
+##Important Notes
+
+- Never change the schema manually.
 Always look at the schema for information on problems for debugging
 
-Run rake console - talk about Pry
 
-Run model - check if it works Do ‘ Model.new ‘
+-	Run model - check if it works Do ‘ Model.new ‘
 
-Then do model new with args but don’t use symbols, then use symbols.
-Then show them that it hasn’t saved. Then show save! And save
+- Lots of built in methods (all, find, update, create, find_by)
 
-Show, all, find, update, create, find_by
+- If you see something that say def up and def down, they are the same as def change.
 
-Class.delete(1) and call delete on the instance, destroy is more rails.. get used to it
+- Cannot reuse id’s. Once it’s gone, it’s gone
 
-Rake db:create_migration NAME=add_functions_to_model_name
-
-add_column, :model_name, :function_name, :string
-
-Make mistake
-
-Rake db:rollback STEP=n
-Or rake db:rollback
-
-Model methods
-
-Ones that change something for an instance… no save and ones that permanently change the record in the db
-
-If you see something that say def up and def down, they are the same as def change.
-
-Cannot reuse id’s. Once it’s gone, it’s gone
-
-find_by takes a string or a hash.
-
-Where is a new one, and is really useful for collecting instances together. Use this for filtering.
-
-Talk about seed
-
-Reiterate steps.
+- find_by takes a string or a hash.
