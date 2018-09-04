@@ -1,9 +1,12 @@
-source "https://rubygems.org"
+require_relative './config/environment'
+require 'sinatra/activerecord/rake'
 
-gem 'activerecord'
-gem 'sinatra-activerecord'
-gem 'rake'
-gem 'require_all'
-gem 'sqlite3'
-gem 'pry'
-gem 'faker'
+desc "Start our app console"
+task :console do
+  Pry.start
+end
+
+desc "Says Hello to the world"
+task :helloworld do
+  puts "Hello World!!!!!!! london-web-060418"
+end
