@@ -8,5 +8,5 @@ end
 
 desc "Says Hello to the world"
 task :helloworld do
-  puts "Hello World!!!!!!! london-web-060418"
+  puts "Hello World!!!!!!! london-web-08"
 end
