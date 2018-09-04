@@ -1,12 +1,12 @@
 require 'faker'
 
-puts 'Creating 100 fake restaurants...'
-100.times do
-  restaurant = Restaurant.new(
-    name:    Faker::Company.name,
-    address: "#{Faker::Address.street_address}, #{Faker::Address.city}",
-    rating:  rand(0..5)
+puts 'Creating Students...'
+arr = %w(Jo Kay Katy Irum Ciaran Billie Bobby Cam Ali)
+arr.each do |student|
+  new_student = Student.new(
+    name:    student,
+    norris_quote: "#{Faker::ChuckNorris.fact}"
   )
-  restaurant.save!
+  new_student.save!
 end
-puts 'Finished!'
+puts 'Finished adding students with awesome quotes'
